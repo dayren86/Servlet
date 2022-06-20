@@ -1,3 +1,4 @@
+
 CREATE TABLE developers (
 id SERIAL PRIMARY KEY,
 name VARCHAR(100) NOT NULL,
@@ -21,7 +22,7 @@ CHECK (skill_level IN('Junior', 'Middle', 'Senior'));
 
 ALTER TABLE skills
 ADD CONSTRAINT position_enum_values
-CHECK (positions IN('Java', 'C++', 'C#', 'JS'));
+CHECK (positions IN('Java', 'Cplus', 'SSharp', 'JS'));
 
 CREATE TABLE projects (
 id SERIAL PRIMARY KEY,

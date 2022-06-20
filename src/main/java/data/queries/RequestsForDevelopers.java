@@ -1,43 +1,96 @@
 package data.queries;
 
 import data.connection.Db;
+import data.entity.Developers;
+import data.entity.Skills;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RequestsForDevelopers {
     private PreparedStatement insertDevelopers;
     private PreparedStatement selectDevelopers;
-    private PreparedStatement geId;
-    private PreparedStatement addToProjectDeveloper;
+    private PreparedStatement insertDevelopersSkills;
+    private PreparedStatement insertDeveloperToProjects;
+    private PreparedStatement updateDevelopers;
+    private PreparedStatement deleteByIdSt;
+
 
     public RequestsForDevelopers(Db db) throws SQLException {
         Connection connection = db.getConnection();
 
         insertDevelopers = connection.prepareStatement(
-                "INSERT INTO developers (name, age, sex) VALUES (?, ?, ?)"
+                "INSERT INTO developers (name, age, sex, salary) VALUES (?, ?, ?, ?)"
         );
 
         selectDevelopers = connection.prepareStatement(
-                "SELECT name, age, sex FROM developers WHERE name = ?"
+                "SELECT id, name, age, sex, salary FROM developers WHERE name = ?"
         );
 
-        geId = connection.prepareStatement(
-                "SELECT id FROM developers WHERE name = ?");
+        insertDevelopersSkills = connection.prepareStatement(
+                "INSERT INTO developers_skills (developers_id, skills_id) VALUES (?, ?)");
 
-        addToProjectDeveloper = connection.prepareStatement(
+        insertDeveloperToProjects = connection.prepareStatement(
                 "INSERT INTO developers_projects (developers_id, projects_id) VALUES (?, ?)");
+
+        updateDevelopers = connection.prepareStatement(
+                "UPDATE developers SET name = ?, age = ?, sex = ?, salary = ? WHERE id = ?"
+        );
+
+        deleteByIdSt = connection.prepareStatement(
+                "DELETE FROM developers WHERE id = ?"
+        );
     }
 
-    public boolean createDevelopers(String name, int age, String sex) {
+    public void updateDevelopersById(Developers developers) {
+        Developers findDeveloper = selectDevelopersByName(developers.getName());
+
         try {
-            insertDevelopers.setString(1, name);
-            insertDevelopers.setInt(2, age);
-            insertDevelopers.setString(3, sex);
+            if (developers.getName() == null) {
+                updateDevelopers.setString(1, findDeveloper.getName());
+            } else {
+                updateDevelopers.setString(1, developers.getName());
+            }
+
+            if (developers.getAge() == 0) {
+                updateDevelopers.setInt(2, findDeveloper.getAge());
+            } else {
+                updateDevelopers.setInt(2, developers.getAge());
+            }
+
+            if (developers.getSex() == null) {
+                updateDevelopers.setString(3, findDeveloper.getSex().toString());
+            } else {
+                updateDevelopers.setString(3, developers.getSex().toString());
+            }
+
+            if (developers.getSalary() == 0) {
+                updateDevelopers.setInt(4, findDeveloper.getSalary());
+            } else {
+                updateDevelopers.setInt(4, developers.getSalary());
+            }
+
+            if (developers.getId() == 0) {
+                updateDevelopers.setInt(5, findDeveloper.getId());
+            }else {
+                updateDevelopers.setInt(5, developers.getId());
+            }
+
+            updateDevelopers.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public boolean createDeveloper(Developers developers) {
+        try {
+            insertDevelopers.setString(1, developers.getName());
+            insertDevelopers.setInt(2, developers.getAge());
+            insertDevelopers.setString(3, developers.getSex().toString());
+            insertDevelopers.setInt(4, developers.getSalary());
             return insertDevelopers.executeUpdate() == 1;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -45,49 +98,82 @@ public class RequestsForDevelopers {
         return false;
     }
 
-    public List<String> selectDevelopersByName(String name) {
+    public void createDevelopersFromList(List<Developers> developers) {
+        try {
+            for (Developers developer : developers) {
+                insertDevelopers.setString(1, developer.getName());
+                insertDevelopers.setInt(2, developer.getAge());
+                insertDevelopers.setString(3, developer.getSex().toString());
+                insertDevelopers.setInt(4, developer.getSalary());
+                insertDevelopers.addBatch();
+            }
+            insertDevelopers.executeBatch();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    public Developers selectDevelopersByName(String name) {
         try {
             selectDevelopers.setString(1, name);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        List<String> result = new ArrayList<>();
-        try(ResultSet resultSet = selectDevelopers.executeQuery()) {
+
+        try (ResultSet resultSet = selectDevelopers.executeQuery()) {
+            Developers developers = new Developers();
             while (resultSet.next()) {
-                result.add(resultSet.getString("name") + " " + resultSet.getInt("age") + " " + resultSet.getString("sex"));
+                developers.setId(resultSet.getInt("id"));
+                developers.setName(resultSet.getString("name"));
+                developers.setAge(resultSet.getInt("age"));
+                developers.setSex(Developers.Sex.valueOf(resultSet.getString("sex")));
+                developers.setSalary(resultSet.getInt("salary"));
             }
-            return result;
+            return developers;
         } catch (SQLException ex) {
             ex.printStackTrace();
             return null;
         }
     }
 
-    //TODO remake return
-    public int getIdByName(String name) {
+
+    public void addDevelopersSkills(Developers developer, Skills skills) {
         try {
-            geId.setString(1, name);
+            insertDevelopersSkills.setInt(1, developer.getId());
+            insertDevelopersSkills.setInt(2, skills.getId());
+            insertDevelopersSkills.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
-        }
-        int result = 0;
-        try(ResultSet resultSet = geId.executeQuery()) {
-            while (resultSet.next()) {
-                result = resultSet.getInt("id");
-            }
-            return result;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return -1;
         }
     }
 
-    public void addToProjectDeveloper(String developer, String project) {
+        public void addDeveloperToProjects(int[] developer, int[] projects) {
         try {
-            addToProjectDeveloper.setString(1, developer);
-            addToProjectDeveloper.setString(2, project);
+            for (int i = 0; i < developer.length; i++) {
+                insertDeveloperToProjects.setInt(1, developer[i]);
+                insertDeveloperToProjects.setInt(2, projects[i]);
+                insertDeveloperToProjects.addBatch();
+            }
+            insertDeveloperToProjects.executeBatch();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
+
+    public void deleById(int id) throws SQLException {
+        deleteByIdSt.setInt(1, id);
+        deleteByIdSt.executeUpdate();
+    }
+
+//    public void addDeveloperToProjects(Developers developer, Projects projects) {
+//        try {
+//            insertDeveloperToProjects.setInt(1, developer.getId());
+//            insertDeveloperToProjects.setInt(2, projects.getId());
+//            insertDeveloperToProjects.executeUpdate();
+//        } catch (SQLException ex) {
+//            ex.printStackTrace();
+//        }
+//    }
+
 }
