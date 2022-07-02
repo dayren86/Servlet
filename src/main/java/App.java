@@ -62,8 +62,8 @@ public class App {
 //
 
         //Запросы домашнего задания
-//        HwQuery hwQuery = new HwQuery(instance);
-//        hwQuery.getSalary("Sites");
+        HwQuery hwQuery = new HwQuery(instance);
+        hwQuery.getSalary("Sites");
 //        hwQuery.getDevelopersBYProject("Database");
 //        hwQuery.getDevelopersByProgrammingLanguage("Java");
 //        hwQuery.getDevelopersBySkillLevel("Middle");

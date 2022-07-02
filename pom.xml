@@ -4,9 +4,31 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>untitled5</artifactId>
+<!--    <groupId>org.example</groupId>-->
+<!--    <artifactId>untitled5</artifactId>-->
+<!--    <version>1.0-SNAPSHOT</version>-->
+
+
+    <groupId>com.example.projects</groupId>
+    <artifactId>documentedproject</artifactId>
+    <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
+    <name>Documented Project</name>
+    <url>http://example.com</url>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <webappDirectory>/sample/servlet/container/deploy/directory</webappDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
@@ -31,8 +53,18 @@
             <version>1.18.24</version>
             <scope>provided</scope>
         </dependency>
-
-
+        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
     </dependencies>
 
     <properties>
