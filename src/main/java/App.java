@@ -59,7 +59,7 @@ public class App {
 //        int[] developers = {1,2,3,4,5,6};
 //        int[] projects = {1,1,2,2,3,3};
 //        requestsForDevelopers.addDeveloperToProjects(developers, projects);
-//
+
 
         //Запросы домашнего задания
         HwQuery hwQuery = new HwQuery(instance);
