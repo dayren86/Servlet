@@ -21,12 +21,14 @@ public class App {
     public static void main(String[] args) throws SQLException {
 //        new DbInitService().dbInit();
 
-        Db instance = Db.getInstance();
 
-        RequestsForDevelopers requestsForDevelopers = new RequestsForDevelopers(instance);
-        RequestsForSkills requestsForSkills = new RequestsForSkills(instance);
-        RequestsForProjects requestsForProjects = new RequestsForProjects(instance);
-        RequestsForCompanies requestsForCompanies = new RequestsForCompanies(instance);
+
+        RequestsForDevelopers requestsForDevelopers = new RequestsForDevelopers();
+        RequestsForSkills requestsForSkills = new RequestsForSkills();
+        RequestsForProjects requestsForProjects = new RequestsForProjects();
+        RequestsForCompanies requestsForCompanies = new RequestsForCompanies();
+
+        System.out.println(requestsForSkills.getAllSkills());
 
 //        Заполнить базу тестовыми данными
 //        requestsForDevelopers.createDevelopersFromList(new TestData().dataDevelopers());
@@ -61,9 +63,9 @@ public class App {
 //        requestsForDevelopers.addDeveloperToProjects(developers, projects);
 
 
-        //Запросы домашнего задания
-        HwQuery hwQuery = new HwQuery(instance);
-        hwQuery.getSalary("Sites");
+//        Запросы домашнего задания
+//        HwQuery hwQuery = new HwQuery(instance);
+//        hwQuery.getSalary("Sites");
 //        hwQuery.getDevelopersBYProject("Database");
 //        hwQuery.getDevelopersByProgrammingLanguage("Java");
 //        hwQuery.getDevelopersBySkillLevel("Middle");

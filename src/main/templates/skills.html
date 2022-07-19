@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Skills</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+<h1 align="center">Skills</h1>
+<div class="companies" align="center">
+    <a type="button" class="btn btn-primary" href="mainpage">Main menu</a>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item list-group-item-secondary" th:each="requestsForSkill: ${requestsForSkills}">
+                    <span th:text="${requestsForSkill}"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <form action="/app/skills/add" method="POST">
+                <div class="form-group">
+                    <label for="position">Add Skills</label>
+                    <input type="text" name="position" class="form-control" id="position" placeholder="Enter Position">
+                </div>
+                <div class="form-group">
+                    <label for="skillLevel"> Skill Level</label>
+                    <input type="text" name="skillLevel" class="form-control" id="skillLevel" placeholder="Enter Skill Level">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Skill</button>
+            </form>
+        </div>
+        <div class="col">
+            <form action="/app/skills/update" method="POST">
+                <div class="form-group">
+                    <label for="updateId">Update Skills</label>
+                    <input type="text" name="updateId" class="form-control" id="updateId" placeholder="Enter Id">
+                </div>
+                <div class="form-group">
+                    <label for="updatePosition">Update Skills</label>
+                    <input type="text" name="updatePosition" class="form-control" id="updatePosition" placeholder="Enter Position">
+                </div>
+                <div class="form-group">
+                    <label for="updateSkillLevel"> Skill Level</label>
+                    <input type="text" name="updateSkillLevel" class="form-control" id="updateSkillLevel" placeholder="Enter Skill Level">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Skill</button>
+            </form>
+        </div>
+        <div class="col">
+            <form action="/app/skills/delete" method="post">
+                <div class="form-group">
+                    <label for="deleteSkill">Delete Skills</label>
+                    <input type="text" class="form-control" name="deleteSkill" id="deleteSkill" placeholder="Enter ID">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

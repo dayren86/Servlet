@@ -13,8 +13,9 @@ public class Db {
 
     private Db() {
         try {
+            Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(prefs.getDB_JDBC_CONNECTION_URL(), prefs.getDB_JDBC_CONNECTION_LOGIN(), prefs.getDB_JDBC_CONNECTION_PASSWORD());
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

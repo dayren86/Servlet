@@ -1,7 +1,6 @@
 package data.queries;
 
 import data.connection.Db;
-import data.entity.Developers;
 import data.entity.Projects;
 
 import java.sql.*;
@@ -10,12 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RequestsForProjects {
+    Db db = Db.getInstance();
+
     private PreparedStatement insertProjectsSt;
     private PreparedStatement selectProjectsSt;
     private PreparedStatement deleteProjectByIdSt;
     private PreparedStatement updateProjectSt;
+    private PreparedStatement getAllProjectsST;
 
-    public RequestsForProjects(Db db) throws SQLException {
+    public RequestsForProjects() throws SQLException {
         Connection connection = db.getConnection();
         insertProjectsSt = connection.prepareStatement(
                 "INSERT INTO projects (project_name, project_description, date_creation) VALUES (?, ?, ?)"
@@ -31,6 +33,29 @@ public class RequestsForProjects {
         updateProjectSt = connection.prepareStatement(
                 "UPDATE projects SET project_name = ?, project_description = ?, date_creation = ? WHERE id = ?"
         );
+        getAllProjectsST = connection.prepareStatement(
+                "SELECT id, project_name, project_description, date_creation FROM projects");
+    }
+
+    public List<Projects> getAllProjects() {
+        try(ResultSet resultSet = getAllProjectsST.executeQuery()) {
+            List<Projects> projectsList = new ArrayList<>();
+            while (resultSet.next()) {
+                Projects projects = new Projects();
+                projects.setId(resultSet.getInt("id"));
+                projects.setProjectName(resultSet.getString("project_name"));
+                projects.setProjectDescription(resultSet.getString("project_description"));
+                projects.setDateCreation(LocalDate.parse(resultSet.getString("date_creation")));
+
+                projectsList.add(projects);
+            }
+
+            return projectsList;
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public boolean createProjects(String projectName, String projectDescription, LocalDate localDate) {

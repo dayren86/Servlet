@@ -7,16 +7,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RequestsForSkills {
+    Db db = Db.getInstance();
+
     private PreparedStatement insertSkillsSt;
     private PreparedStatement selectSkillsSt;
     private PreparedStatement deleteByIdSt;
     private PreparedStatement updateSkillsSt;
+    private  PreparedStatement getAllSkillsSt;
 
-
-    public RequestsForSkills(Db db) throws SQLException {
+    public RequestsForSkills() throws SQLException {
         Connection connection = db.getConnection();
 
         insertSkillsSt = connection.prepareStatement(
@@ -32,6 +35,29 @@ public class RequestsForSkills {
         updateSkillsSt = connection.prepareStatement(
                 "UPDATE skills SET positions = ?, skill_level = ? WHERE id = ?"
         );
+        getAllSkillsSt = connection.prepareStatement(
+                "SELECT id, positions, skill_level FROM skills"
+        );
+    }
+
+    public List<Skills> getAllSkills() {
+        try(ResultSet resultSet = getAllSkillsSt.executeQuery()) {
+            List<Skills> skillsList = new ArrayList<>();
+            while (resultSet.next()) {
+                Skills skills = new Skills();
+                skills.setId(resultSet.getInt("id"));
+                skills.setPosition(Skills.Position.valueOf(resultSet.getString("positions")));
+                skills.setSkillLevel(Skills.SkillLevel.valueOf(resultSet.getString("skill_level")));
+
+                skillsList.add(skills);
+            }
+
+            return skillsList;
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public boolean createSkills(Skills skills) {

@@ -7,15 +7,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RequestsForCompanies {
+    Db db = Db.getInstance();
+
     private PreparedStatement insertCompanies;
     private PreparedStatement selectCompanies;
     private PreparedStatement deleteCompaniesByIdSt;
     private PreparedStatement updateCompaniesSt;
+    private PreparedStatement selectCompaniesAll;
 
-    public RequestsForCompanies(Db db) throws SQLException {
+    public RequestsForCompanies() throws SQLException {
         Connection connection = db.getConnection();
 
         insertCompanies = connection.prepareStatement(
@@ -31,7 +35,10 @@ public class RequestsForCompanies {
         updateCompaniesSt = connection.prepareStatement(
                 "UPDATE companies SET it_companies = ?, company_description = ? WHERE id = ?"
         );
+        selectCompaniesAll = connection.prepareStatement(
+                "SELECT id, it_companies, company_description FROM companies");
     }
+
 
     public boolean createCompanies(String itCompanies, String companyDescription) {
         try {
@@ -73,6 +80,25 @@ public class RequestsForCompanies {
             companies.setCompanyDescription(resultSet.getString("company_description"));
 
             return companies;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    public List<Companies> selectAllCompanies() {
+        try(ResultSet resultSet = selectCompaniesAll.executeQuery()) {
+            List<Companies> result = new ArrayList<>();
+            while (resultSet.next()) {
+                Companies companies = new Companies();
+
+                companies.setId(resultSet.getInt("id"));
+                companies.setItCompanies(resultSet.getString("it_companies"));
+                companies.setCompanyDescription(resultSet.getString("company_description"));
+
+                result.add(companies);
+            }
+
+            return result;
         } catch (SQLException ex) {
             ex.printStackTrace();
             return null;

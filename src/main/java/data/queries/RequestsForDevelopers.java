@@ -8,18 +8,24 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RequestsForDevelopers {
+    Db db = Db.getInstance();
+
     private PreparedStatement insertDevelopers;
     private PreparedStatement selectDevelopers;
     private PreparedStatement insertDevelopersSkills;
     private PreparedStatement insertDeveloperToProjects;
     private PreparedStatement updateDevelopers;
     private PreparedStatement deleteByIdSt;
+    private PreparedStatement getAllDevelopersSt;
 
 
-    public RequestsForDevelopers(Db db) throws SQLException {
+    public RequestsForDevelopers() throws SQLException {
+
+
         Connection connection = db.getConnection();
 
         insertDevelopers = connection.prepareStatement(
@@ -43,6 +49,29 @@ public class RequestsForDevelopers {
         deleteByIdSt = connection.prepareStatement(
                 "DELETE FROM developers WHERE id = ?"
         );
+
+        getAllDevelopersSt = connection.prepareStatement(
+                "SELECT id, name, age, sex, salary FROM developers");
+    }
+
+    public List<Developers> getAllDevelopers() {
+        try(ResultSet resultSet = getAllDevelopersSt.executeQuery()) {
+            List<Developers> developersList = new ArrayList<>();
+            while (resultSet.next()) {
+                Developers developers = new Developers();
+                developers.setId(resultSet.getInt("id"));
+                developers.setName(resultSet.getString("name"));
+                developers.setAge(resultSet.getInt("age"));
+                developers.setSex(Developers.Sex.valueOf(resultSet.getString("sex")));
+                developers.setSalary(resultSet.getInt("salary"));
+
+                developersList.add(developers);
+            }
+            return developersList;
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public void updateDevelopersById(Developers developers) {
@@ -161,7 +190,7 @@ public class RequestsForDevelopers {
         }
     }
 
-    public void deleById(int id) throws SQLException {
+    public void deleteById(int id) throws SQLException {
         deleteByIdSt.setInt(1, id);
         deleteByIdSt.executeUpdate();
     }
