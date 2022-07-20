@@ -38,7 +38,7 @@ public class MainPage extends HttpServlet {
 
 
         FileTemplateResolver resolver = new FileTemplateResolver();
-        resolver.setPrefix("D:/java/GoItHW6/src/main/templates/");
+        resolver.setPrefix("/src/main/templates/");
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML5");
         resolver.setOrder(engine.getTemplateResolvers().size());
