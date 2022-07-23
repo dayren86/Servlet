@@ -10,20 +10,15 @@ import java.sql.SQLException;
 
 public class AddCommands implements Command {
     @Override
-    public void process(HttpServletRequest req, HttpServletResponse resp) {
+    public void process(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         String name = req.getParameter("name");
         String companyDescription = req.getParameter("companyDescription");
 
-        try {
-            new RequestsForCompanies().createCompanies(name, companyDescription);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        try {
-            resp.sendRedirect("/app/companies");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new RequestsForCompanies().createCompanies(name, companyDescription);
+
+
+        resp.sendRedirect("/companies");
+
     }
 }

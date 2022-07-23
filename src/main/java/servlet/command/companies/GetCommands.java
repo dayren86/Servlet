@@ -15,12 +15,14 @@ public class GetCommands implements Command {
     @Override
     public void process(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         resp.setContentType("text/html");
+
         Context context = new Context(
                 req.getLocale(),
                 Map.of("requestsForCompanies", new RequestsForCompanies().selectAllCompanies())
         );
 
         MainPage.getEngine().process("companies", context, resp.getWriter());
+
         resp.getWriter().close();
     }
 }

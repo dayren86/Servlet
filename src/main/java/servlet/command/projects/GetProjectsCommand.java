@@ -1,6 +1,5 @@
 package servlet.command.projects;
 
-import data.queries.RequestsForCompanies;
 import data.queries.RequestsForProjects;
 import org.thymeleaf.context.Context;
 import servlet.MainPage;

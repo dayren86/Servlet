@@ -21,6 +21,6 @@ public class UpdateDevelopersCommand implements Command {
 
         new RequestsForDevelopers().updateDevelopersById(developers);
 
-        resp.sendRedirect("/app/developers");
+        resp.sendRedirect("/developers");
     }
 }

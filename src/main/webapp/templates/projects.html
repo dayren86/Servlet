@@ -9,14 +9,15 @@
 <body>
 <h1 align="center">Projects</h1>
 <div class="companies" align="center">
-    <a type="button" class="btn btn-primary" href="mainpage">Main menu</a>
+    <a type="button" class="btn btn-primary" href="/">Main menu</a>
 </div>
 
 <div class="container">
     <div class="row">
         <div class="col">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item list-group-item-secondary" th:each="requestsForProject: ${requestsForProjects}">
+                <li class="list-group-item list-group-item-secondary"
+                    th:each="requestsForProject: ${requestsForProjects}">
                     <span th:text="${requestsForProject}"></span>
                 </li>
             </ul>
@@ -24,48 +25,55 @@
     </div>
     <div class="row">
         <div class="col">
-            <form action="/app/projects/add" method="POST">
+            <form action="projects/add" method="POST">
                 <div class="form-group">
                     <label for="projectName">Add Projects</label>
-                    <input type="text" name="projectName" class="form-control" id="projectName" placeholder="Enter Project Name">
+                    <input type="text" name="projectName" class="form-control" id="projectName"
+                           placeholder="Enter Project Name">
                 </div>
                 <div class="form-group">
                     <label for="projectDescription">Project Description</label>
-                    <input type="text" name="projectDescription" class="form-control" id="projectDescription" placeholder="Enter Project Description">
+                    <input type="text" name="projectDescription" class="form-control" id="projectDescription"
+                           placeholder="Enter Project Description">
                 </div>
                 <div class="form-group">
                     <label for="dateCreation">Date Creation</label>
-                    <input type="text" name="dateCreation" class="form-control" id="dateCreation" placeholder="Enter Date Creation">
+                    <input type="text" name="dateCreation" class="form-control" id="dateCreation"
+                           placeholder="Enter Date Creation">
                 </div>
                 <button type="submit" class="btn btn-primary">Add Projects</button>
             </form>
         </div>
         <div class="col">
-            <form action="/app/projects/update" method="POST">
+            <form action="/projects/update" method="POST">
                 <div class="form-group">
                     <label for="updateId">Update Projects</label>
                     <input type="text" name="updateId" class="form-control" id="updateId" placeholder="Enter Id">
                 </div>
                 <div class="form-group">
                     <label for="updateProjectName">Project Name</label>
-                    <input type="text" name="updateProjectName" class="form-control" id="updateProjectName" placeholder="Enter Project Name">
+                    <input type="text" name="updateProjectName" class="form-control" id="updateProjectName"
+                           placeholder="Enter Project Name">
                 </div>
                 <div class="form-group">
                     <label for="updateProjectDescription">Project Description</label>
-                    <input type="text" name="updateProjectDescription" class="form-control" id="updateProjectDescription" placeholder="Enter Project Descriptionl">
+                    <input type="text" name="updateProjectDescription" class="form-control"
+                           id="updateProjectDescription" placeholder="Enter Project Descriptionl">
                 </div>
                 <div class="form-group">
                     <label for="updateDateCreation">Date Creation</label>
-                    <input type="text" name="updateDateCreation" class="form-control" id="updateDateCreation" placeholder="Enter Date Creation">
+                    <input type="text" name="updateDateCreation" class="form-control" id="updateDateCreation"
+                           placeholder="Enter Date Creation">
                 </div>
                 <button type="submit" class="btn btn-primary">Update Project</button>
             </form>
         </div>
         <div class="col">
-            <form action="/app/projects/delete" method="post">
+            <form action="/projects/delete" method="post">
                 <div class="form-group">
                     <label for="deleteProject">Delete Project</label>
-                    <input type="text" class="form-control" name="deleteProject" id="deleteProject" placeholder="Enter ID">
+                    <input type="text" class="form-control" name="deleteProject" id="deleteProject"
+                           placeholder="Enter ID">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Delete</button>

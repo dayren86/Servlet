@@ -10,18 +10,13 @@ import java.sql.SQLException;
 
 public class DeleteCommands implements Command {
     @Override
-    public void process(HttpServletRequest req, HttpServletResponse resp) {
+    public void process(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         String id = req.getParameter("id");
-        try {
-            new RequestsForCompanies().deleteCompaniesById(Integer.parseInt(id));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        try {
-            resp.sendRedirect("/app/companies");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new RequestsForCompanies().deleteCompaniesById(Integer.parseInt(id));
+
+
+        resp.sendRedirect("/companies");
+
     }
 }

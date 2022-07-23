@@ -15,13 +15,16 @@ public class GetSkillsCommand implements Command {
     @Override
     public void process(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         resp.setContentType("text/html");
+
         Context context = new Context(
                 req.getLocale(),
                 Map.of(
                         "requestsForSkills",
                         new RequestsForSkills().getAllSkills())
         );
+
         MainPage.getEngine().process("skills", context, resp.getWriter());
+
         resp.getWriter().close();
     }
 }

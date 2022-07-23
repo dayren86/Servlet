@@ -18,9 +18,8 @@ public class AddDevelopersCommand implements Command {
         developers.setSex(Developers.Sex.valueOf(req.getParameter("sex")));
         developers.setSalary(Integer.parseInt(req.getParameter("salary")));
 
-
         new RequestsForDevelopers().createDeveloper(developers);
 
-        resp.sendRedirect("/app/developers");
+        resp.sendRedirect("/developers");
     }
 }

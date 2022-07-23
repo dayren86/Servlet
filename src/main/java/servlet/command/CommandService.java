@@ -30,22 +30,22 @@ public class CommandService {
     public CommandService() {
         commands = new HashMap<>();
 
-        commands.put("GET /app/companies", new GetCommands());
-        commands.put("POST /app/companies/delete", new DeleteCommands());
-        commands.put("POST /app/companies", new AddCommands());
-        commands.put("POST /app/companies/update", new UpdateCommand());
-        commands.put("GET /app/developers", new GetDevelopersCommand());
-        commands.put("POST /app/developers/add", new AddDevelopersCommand());
-        commands.put("POST /app/developers/delete", new DeleteDevelopersCommand());
-        commands.put("POST /app/developers/update", new UpdateDevelopersCommand());
-        commands.put("GET /app/skills", new GetSkillsCommand());
-        commands.put("POST /app/skills/add", new AddSkillsCommand());
-        commands.put("POST /app/skills/update", new UpdateSkillsCommand());
-        commands.put("POST /app/skills/delete", new DeleteSkillsCommand());
-        commands.put("GET /app/projects", new GetProjectsCommand());
-        commands.put("POST /app/projects/add", new AddProjectsCommand());
-        commands.put("POST /app/projects/update", new UpdateProjectsCommand());
-        commands.put("POST /app/projects/delete", new DeleteProjectsCommand());
+        commands.put("GET /companies", new GetCommands());
+        commands.put("POST /companies/delete", new DeleteCommands());
+        commands.put("POST /companies", new AddCommands());
+        commands.put("POST /companies/update", new UpdateCommand());
+        commands.put("GET /developers", new GetDevelopersCommand());
+        commands.put("POST /developers/add", new AddDevelopersCommand());
+        commands.put("POST /developers/delete", new DeleteDevelopersCommand());
+        commands.put("POST /developers/update", new UpdateDevelopersCommand());
+        commands.put("GET /skills", new GetSkillsCommand());
+        commands.put("POST /skills/add", new AddSkillsCommand());
+        commands.put("POST /skills/update", new UpdateSkillsCommand());
+        commands.put("POST /skills/delete", new DeleteSkillsCommand());
+        commands.put("GET /projects", new GetProjectsCommand());
+        commands.put("POST /projects/add", new AddProjectsCommand());
+        commands.put("POST /projects/update", new UpdateProjectsCommand());
+        commands.put("POST /projects/delete", new DeleteProjectsCommand());
     }
 
     public void process(HttpServletRequest req, HttpServletResponse resp) {
@@ -54,9 +54,7 @@ public class CommandService {
 
         try {
             commands.get(commandKey).process(req, resp);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }

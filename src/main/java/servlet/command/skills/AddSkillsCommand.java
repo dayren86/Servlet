@@ -18,6 +18,6 @@ public class AddSkillsCommand implements Command {
 
         new RequestsForSkills().createSkills(skills);
 
-        resp.sendRedirect("/app/skills");
+        resp.sendRedirect("/skills");
     }
 }

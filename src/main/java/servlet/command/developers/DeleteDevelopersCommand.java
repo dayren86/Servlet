@@ -13,8 +13,9 @@ public class DeleteDevelopersCommand implements Command {
     @Override
     public void process(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         String id = req.getParameter("deleteDevelopers");
+
         new RequestsForDevelopers().deleteById(Integer.parseInt(id));
 
-        resp.sendRedirect("/app/developers");
+        resp.sendRedirect("/developers");
     }
 }

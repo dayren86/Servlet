@@ -14,10 +14,13 @@ public class Db {
     private Db() {
         try {
             Class.forName("org.postgresql.Driver");
+
             connection = DriverManager.getConnection(prefs.getDB_JDBC_CONNECTION_URL(), prefs.getDB_JDBC_CONNECTION_LOGIN(), prefs.getDB_JDBC_CONNECTION_PASSWORD());
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        new DbInitService().dbInit();
     }
 
     public static Db getInstance() {
@@ -26,13 +29,5 @@ public class Db {
 
     public Connection getConnection() {
         return connection;
-    }
-
-    public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

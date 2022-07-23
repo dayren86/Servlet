@@ -19,6 +19,6 @@ public class UpdateSkillsCommand implements Command {
 
         new RequestsForSkills().updateSkills(skills.getId(),skills);
 
-        resp.sendRedirect("/app/skills");
+        resp.sendRedirect("/skills");
     }
 }

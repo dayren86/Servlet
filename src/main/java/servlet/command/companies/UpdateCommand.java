@@ -11,20 +11,16 @@ import java.sql.SQLException;
 
 public class UpdateCommand implements Command {
     @Override
-    public void process(HttpServletRequest req, HttpServletResponse resp)  {
+    public void process(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         String id = req.getParameter("id");
         String updateName = req.getParameter("updateName");
         String updateCompanyDescription = req.getParameter("updateCompanyDescription");
 
-        try {
-            new RequestsForCompanies().updateCompanies(Integer.parseInt(id), new Companies(updateName,updateCompanyDescription));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            resp.sendRedirect("/app/companies");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        new RequestsForCompanies().updateCompanies(Integer.parseInt(id), new Companies(updateName, updateCompanyDescription));
+
+
+        resp.sendRedirect("/companies");
+
     }
 }

@@ -1,6 +1,5 @@
 package servlet.command.projects;
 
-import data.queries.RequestsForDevelopers;
 import data.queries.RequestsForProjects;
 import servlet.command.Command;
 
@@ -15,6 +14,6 @@ public class DeleteProjectsCommand implements Command {
         String id = req.getParameter("deleteProject");
         new RequestsForProjects().deleteProjectsById(Integer.parseInt(id));
 
-        resp.sendRedirect("/app/projects");
+        resp.sendRedirect("/projects");
     }
 }

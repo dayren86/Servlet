@@ -19,6 +19,7 @@ public class AddProjectsCommand implements Command {
         projects.setDateCreation(LocalDate.parse(req.getParameter("dateCreation")));
 
         new RequestsForProjects().createProjects(projects.getProjectName(), projects.getProjectDescription(),projects.getDateCreation());
-        resp.sendRedirect("/app/projects");
+
+        resp.sendRedirect("/projects");
     }
 }

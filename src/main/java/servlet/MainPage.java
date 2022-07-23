@@ -1,23 +1,18 @@
 package servlet;
 
-import data.queries.RequestsForCompanies;
-import lombok.SneakyThrows;
+import data.connection.Db;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
 import servlet.command.CommandService;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
-@WebServlet("/mainpage")
+@WebServlet("/")
 public class MainPage extends HttpServlet {
 
     private static TemplateEngine engine;
@@ -33,12 +28,11 @@ public class MainPage extends HttpServlet {
     }
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         engine = new TemplateEngine();
 
-
         FileTemplateResolver resolver = new FileTemplateResolver();
-        resolver.setPrefix("/src/main/templates/");
+        resolver.setPrefix(getServletContext().getRealPath("templates/"));
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML5");
         resolver.setOrder(engine.getTemplateResolvers().size());
@@ -46,20 +40,17 @@ public class MainPage extends HttpServlet {
         engine.addTemplateResolver(resolver);
 
         commandService = new CommandService();
+        Db.getInstance();
     }
 
-
-
-    @SneakyThrows
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/html");
-        Context context = new Context(
-                    req.getLocale(),
-                    Map.of("requestsForCompanies", new RequestsForCompanies().selectAllCompanies())
-            );
 
-        engine.process("mainpage", context, resp.getWriter());
+        Context context = new Context();
+
+        engine.process("/mainpage", context, resp.getWriter());
+
         resp.getWriter().close();
     }
 }

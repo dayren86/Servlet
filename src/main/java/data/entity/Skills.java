@@ -17,9 +17,9 @@ public class Skills {
 
     public enum Position {
         Java,
-        SSharp,
+        CSharp,
         JS,
-        Cplus
+        CPlus
 
     }
 

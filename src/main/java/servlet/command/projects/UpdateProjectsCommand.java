@@ -21,6 +21,6 @@ public class UpdateProjectsCommand implements Command {
 
         new RequestsForProjects().updateProjects(projects.getId(), projects);
 
-        resp.sendRedirect("/app/projects");
+        resp.sendRedirect("/projects");
     }
 }
